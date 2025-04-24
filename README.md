@@ -1,1 +1,10 @@
 # laravel-letmind-chatbot
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel_chat_bot
+DB_USERNAME=root
+DB_PASSWORD=
+
+NETMIND_API_KEY=c43e5d81612e45eca3bd501a787a38ec
