@@ -12,7 +12,11 @@ Route::post('/login', [AuthController::class, 'login']);
 
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::post('/chat', [NetMindController::class, 'chat']);
+Route::middleware(['api', 'web'])->post('/chat', [NetMindController::class, 'chat']);
+
+
+
+// Route::post('/chat', [NetMindController::class, 'chat']);
 Route::middleware('auth:api')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);

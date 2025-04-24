@@ -17,10 +17,10 @@ class NetMindService
         $this->apiKey = env('NETMIND_API_KEY');
     }
 
-    public function chatCompletion(array $messages, string $model = 'Qwen/Qwen2.5-VL-72B-Instruct')
+    public function chatCompletion(array $messages, string $model = 'Qwen/Qwen2.5-VL-72B-Instruct', bool $stream = false)
     {
         try {
-            $response = $this->client->post("{$this->baseUrl}/chat/completions", [
+            $options = [
                 'headers' => [
                     'Authorization' => 'Bearer ' . $this->apiKey,
                     'Content-Type' => 'application/json',
@@ -28,13 +28,19 @@ class NetMindService
                 'json' => [
                     'model' => $model,
                     'messages' => $messages,
-                    'max_tokens' => 512
+                    'max_tokens' => 512,
                 ],
-            ]);
+            ];
 
-            return json_decode($response->getBody()->getContents(), true);
+            if ($stream) {
+                $options['stream'] = true;
+                $options['json']['stream'] = true;
+            }
+
+            $response = $this->client->post("{$this->baseUrl}/chat/completions", $options);
+
+            return $stream ? $response->getBody() : json_decode($response->getBody()->getContents(), true);
         } catch (GuzzleException $e) {
-            // Handle exception
             return ['error' => $e->getMessage()];
         }
     }

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Help-Desk Chatbot</title>
     <link rel="stylesheet" href="style.css">
 
@@ -86,6 +87,8 @@
         const form = document.getElementById('chat-form');
         const input = document.getElementById('user-input');
         const chatBox = document.getElementById('chat-box');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -102,6 +105,7 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken
                     },
                     body: JSON.stringify({
                         message: userMessage
